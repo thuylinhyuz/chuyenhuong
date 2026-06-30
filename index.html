@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>Đang chuyển hướng...</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #0a0a0f;
+    color: #ffffff;
+    font-family: 'Segoe UI', sans-serif;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* Hiệu ứng nền lưới xanh */
+  body::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0,150,255,0.08) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,150,255,0.08) 1px, transparent 1px);
+    background-size: 40px 40px;
+    animation: gridMove 8s linear infinite;
+  }
+
+  @keyframes gridMove {
+    0% { background-position: 0 0; }
+    100% { background-position: 40px 40px; }
+  }
+
+  .container {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    padding: 40px 60px;
+    background: rgba(10, 15, 30, 0.7);
+    border: 1px solid rgba(0, 170, 255, 0.4);
+    border-radius: 16px;
+    box-shadow: 0 0 40px rgba(0, 150, 255, 0.35), inset 0 0 20px rgba(0,150,255,0.05);
+    backdrop-filter: blur(6px);
+  }
+
+  .spinner {
+    width: 60px;
+    height: 60px;
+    margin: 0 auto 24px;
+    border: 3px solid rgba(0, 170, 255, 0.15);
+    border-top: 3px solid #00aaff;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    box-shadow: 0 0 20px rgba(0,170,255,0.6);
+  }
+
+  @keyframes spin {
+    100% { transform: rotate(360deg); }
+  }
+
+  h1 {
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    color: #fff;
+    text-shadow: 0 0 12px rgba(0,170,255,0.8);
+    margin-bottom: 10px;
+  }
+
+  p {
+    font-size: 14px;
+    color: #8fc4ff;
+    margin-bottom: 6px;
+  }
+
+  .domain {
+    color: #00aaff;
+    font-weight: 600;
+    text-shadow: 0 0 8px rgba(0,170,255,0.7);
+  }
+
+  .countdown {
+    margin-top: 18px;
+    font-size: 36px;
+    font-weight: 700;
+    color: #00ccff;
+    text-shadow: 0 0 18px rgba(0,200,255,0.9);
+  }
+
+  .bar {
+    margin-top: 16px;
+    width: 100%;
+    height: 4px;
+    background: rgba(0,170,255,0.15);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .bar-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #0077ff, #00ccff);
+    box-shadow: 0 0 10px #00aaff;
+    animation: fill 3s linear forwards;
+  }
+
+  @keyframes fill {
+    0% { width: 0%; }
+    100% { width: 100%; }
+  }
+
+  .skip {
+    display: inline-block;
+    margin-top: 22px;
+    color: #00aaff;
+    text-decoration: none;
+    font-size: 13px;
+    border: 1px solid rgba(0,170,255,0.4);
+    padding: 8px 18px;
+    border-radius: 8px;
+    transition: 0.2s;
+  }
+
+  .skip:hover {
+    background: rgba(0,170,255,0.15);
+    box-shadow: 0 0 14px rgba(0,170,255,0.6);
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="spinner"></div>
+  <h1>Trang web đã chuyển địa chỉ</h1>
+  <p>Đang đưa bạn đến <span class="domain" id="newDomainText"></span></p>
+  <div class="countdown" id="countdown">3</div>
+  <div class="bar"><div class="bar-fill"></div></div>
+  <a href="#" class="skip" id="skipLink">Chuyển ngay →</a>
+</div>
+
+<script>
+  const oldDomain = "api.ducyuz.com";
+  const newDomain = "api.vanducdev.com";
+
+  const newUrl = "https://" + newDomain + location.pathname + location.search + location.hash;
+  document.getElementById('newDomainText').textContent = newDomain;
+  document.getElementById('skipLink').href = newUrl;
+
+  let count = 3;
+  const el = document.getElementById('countdown');
+  const timer = setInterval(() => {
+    count--;
+    el.textContent = count;
+    if (count <= 0) {
+      clearInterval(timer);
+      location.replace(newUrl);
+    }
+  }, 1000);
+</script>
+
+</body>
+</html>
